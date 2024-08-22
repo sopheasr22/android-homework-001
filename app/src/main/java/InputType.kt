@@ -1,4 +1,5 @@
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.*
@@ -7,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,7 +29,8 @@ fun Reuseinput(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String
+    placeholder: String,
+    keyboardOptions: KeyboardOptions,
 ) {
     OutlinedTextField(
         value = value,
@@ -35,7 +38,9 @@ fun Reuseinput(
         label = { Text(text = label) },
         modifier = modifier
             .padding(vertical = 8.dp),
-        placeholder = { Text(text = placeholder) }
+        placeholder = { Text(text = placeholder) },
+        keyboardOptions = keyboardOptions
+
     )
 }
 
@@ -73,7 +78,8 @@ fun FormScreen() {
                 value = user.name.value,
                 onValueChange = { user.name.value = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = "please enter your name"
+                placeholder = "please enter your name",
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
 
             )
 
@@ -86,14 +92,16 @@ fun FormScreen() {
                     value = user.gender.value,
                     onValueChange = { user.gender.value = it },
                     modifier = Modifier.weight(0.5f),
-                    placeholder = "gender"
+                    placeholder = "gender",
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                 )
                 Reuseinput(
                     label = "Phone Number",
                     value = user.phoneNumber.value,
                     onValueChange = { user.phoneNumber.value = it },
                     modifier = Modifier.weight(1f),
-                    placeholder = "phone"
+                    placeholder = "phone",
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 )
             }
 
@@ -102,7 +110,8 @@ fun FormScreen() {
                 value = user.address.value,
                 onValueChange = { user.address.value = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = "enter your address"
+                placeholder = "enter your address",
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
             )
 
              if (user.name.value.isEmpty() || user.gender.value.isEmpty() || user.phoneNumber.value.isEmpty()
