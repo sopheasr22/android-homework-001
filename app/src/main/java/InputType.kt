@@ -16,106 +16,146 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.homework.R
 
+data class User(
+    var name: String = "",
+    var gender: String = "",
+    var phoneNumber: String = "",
+    var address: String = "",
+)
 class ManageUser : ViewModel() {
-    var name = mutableStateOf("")
-    var gender = mutableStateOf("")
-    var phoneNumber = mutableStateOf("")
-    var address = mutableStateOf("")
+    var userData = mutableStateOf(User())
+
+    fun UpdateName(input: String) {
+        userData.value = userData.value.copy(
+            name = input
+        )
+    }
+    fun UpdateGender(input: String) {
+        userData.value = userData.value.copy(
+            gender = input
+        )
+    }
+    fun UpdatePhone(input: String) {
+        userData.value = userData.value.copy(
+            phoneNumber = input
+        )
+    }
+    fun UpdateAddress(input: String) {
+        userData.value = userData.value.copy(
+            address = input
+        )
+    }
 }
 
 @Composable
-fun Reuseinput(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
+fun TextFiledComponent(
     placeholder: String,
-    keyboardOptions: KeyboardOptions,
+    label: String,
+    onTextChange: (String) -> Unit,
+    event: String,
+    vm: ManageUser,
+    modifier: Modifier,
+    keyboardOptions: KeyboardOptions
 ) {
     OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(text = label) },
-        modifier = modifier
-            .padding(vertical = 8.dp),
+        value = if (event == "name") vm.userData.value.name
+        else if (event == "gender") {
+            vm.userData.value.gender
+        } else if (event == "phone") {
+            vm.userData.value.phoneNumber
+        } else {
+            vm.userData.value.address
+        },
         placeholder = { Text(text = placeholder) },
+        label = { Text(text = label) },
+        onValueChange = { onTextChange(it) },
+        modifier = modifier.padding(8.dp),
         keyboardOptions = keyboardOptions
-
     )
+
 }
 
 @Composable
 fun FormScreen() {
     val user: ManageUser = viewModel()
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
-        ) {
-            Text(
-                text = "Registration Form",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp),
-                fontSize = 20.sp,
-            )
-            Icon(
-                imageVector = Icons.Rounded.AccountCircle,
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier.padding(16.dp),
 
-            )
-        }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Text(
+                    text = "Registration Form",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp),
+                    fontSize = 20.sp,
+                )
+                Icon(
+                    imageVector = Icons.Rounded.AccountCircle,
+                    contentDescription = stringResource(id = R.string.app_name),
+                    modifier = Modifier.padding(16.dp),
 
+                    )
+            }
 
-            Reuseinput(
-                label = "Full Name",
-                value = user.name.value,
-                onValueChange = { user.name.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = "please enter your name",
+            TextFiledComponent(
+                placeholder = "Enter your Name",
+                label = "Name",
+                {
+                    user.UpdateName(it)
+                },
+                "name",
+                user,
+                Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
-
             )
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Reuseinput(
-                    label = "Gender",
-                    value = user.gender.value,
-                    onValueChange = { user.gender.value = it },
+                TextFiledComponent(
+                    placeholder = "Gender",
+                    label = "gender",
+                    {
+                        user.UpdateGender(it)
+                    },
+                    "gender",
+                    user,
                     modifier = Modifier.weight(0.5f),
-                    placeholder = "gender",
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                 )
-                Reuseinput(
-                    label = "Phone Number",
-                    value = user.phoneNumber.value,
-                    onValueChange = { user.phoneNumber.value = it },
-                    modifier = Modifier.weight(1f),
+                TextFiledComponent(
                     placeholder = "phone",
+                    label = "phone",
+                    {
+                        user.UpdatePhone(it)
+                    },
+                    "phone",
+                    user, modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 )
             }
 
-            Reuseinput(
-                label = "Address",
-                value = user.address.value,
-                onValueChange = { user.address.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = "enter your address",
+            TextFiledComponent(
+                placeholder = "address",
+                label = "address",
+                {
+                    user.UpdateAddress(it)
+                },
+                "address",
+                user, Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
             )
-
-             if (user.name.value.isEmpty() || user.gender.value.isEmpty() || user.phoneNumber.value.isEmpty()
-                 ||user.address.value.isEmpty()){
+             if (user.userData.value.name.isEmpty() || user.userData.value.gender.isEmpty()|| user.userData.value.gender.isEmpty()
+                 ||user.userData.value.address.isEmpty()){
                  Button(
                      onClick = { },
                      modifier = Modifier
@@ -125,7 +165,6 @@ fun FormScreen() {
                  ) {
                      Text("Submit")
                  }
-
              }
             else {
                  Button(
@@ -141,7 +180,7 @@ fun FormScreen() {
 
         }
     }
-}
+
 
 @Preview(showBackground = true)
 @Composable
