@@ -154,32 +154,22 @@ fun FormScreen() {
                 user, Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
             )
-             if (user.userData.value.name.isEmpty() || user.userData.value.gender.isEmpty()|| user.userData.value.gender.isEmpty()
-                 ||user.userData.value.address.isEmpty()){
-                 Button(
-                     onClick = { },
-                     modifier = Modifier
-                         .padding(top = 16.dp)
-                         .fillMaxWidth(),
-                     enabled = false
-                 ) {
-                     Text("Submit")
-                 }
-             }
-            else {
-                 Button(
-                     onClick = { },
-                     modifier = Modifier
-                         .padding(top = 16.dp)
-                         .fillMaxWidth(),
-                     enabled = true
-                 ) {
-                     Text("Submit")
-                 }
+
+
+            Button(
+                onClick = { },
+                modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+                enabled = user.userData.value.name.isNotEmpty() &&
+                        user.userData.value.gender.isNotEmpty() &&
+                        user.userData.value.phoneNumber.isNotEmpty() &&
+                        user.userData.value.address.isNotEmpty()
+            ) {
+                Text("Submit")
+            }
              }
 
         }
-    }
+
 
 
 @Preview(showBackground = true)
