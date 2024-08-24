@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -75,10 +76,10 @@ fun TextFiledComponent(
 
 }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun FormScreen() {
     val user: ManageUser = viewModel()
-
 
         Column(
             modifier = Modifier
